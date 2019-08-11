@@ -25,7 +25,7 @@ public class Retry {
         onException(maxAttempts, null, retryOperation);
     }
 
-    public static void onException(int maxAttempts, List<Class<?>> whitelist, RetryOperation retryOperation) throws Exception {
+    public static void onException(int maxAttempts, List<Class<? extends Exception>> whitelist, RetryOperation retryOperation) throws Exception {
         for (int attempt = 1; ; attempt++) {
             try {
                 retryOperation.doIt(attempt);
@@ -76,7 +76,7 @@ public class Retry {
         onThrowable(maxAttempts, null, retryOperation);
     }
 
-    public static void onThrowable(int maxAttempts, List<Class<?>> whitelist,  RetryOperation retryOperation) throws Throwable {
+    public static void onThrowable(int maxAttempts, List<Class<? extends Throwable>> whitelist,  RetryOperation retryOperation) throws Throwable {
         for (int attempt = 1; ; attempt++) {
             try {
                 retryOperation.doIt(attempt);

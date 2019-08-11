@@ -7,6 +7,10 @@
 My first attempts in researching a solution for this were not very satisfying. Most times you only could retry the whole method or just use a simple loop. But I wanted something more granular and more extensible without copying the same loops over and over again.  
 The closest solution I found was the "enterprisy" Stackoverflow answer by [ach](https://stackoverflow.com/a/13240586) - which lost against the simple loop as the correct answer ;-). This is a slightly enhanced version of the retry functionality with Java 8 compatibility.
 
+# Documentation
+
+[JavaDoc](https://sj14.github.io/retry/)
+
 # Installation
 
 Include the `Retry` library to your project with [JitPack (Retry)](https://jitpack.io/#sj14/retry).

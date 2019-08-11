@@ -15,7 +15,6 @@ public class Retry {
     }
 
     /**
-     * based on https://stackoverflow.com/a/13240586
      *
      * @param maxAttempts
      * @param retryOperation
@@ -25,6 +24,13 @@ public class Retry {
         onException(maxAttempts, null, retryOperation);
     }
 
+    /**
+     *
+     * @param maxAttempts how often should we try again when an exception is thrown?
+     * @param whitelist don't retry if one of those exceptions is thrown.
+     * @param retryOperation the code which should be retried.
+     * @throws Exception of the last attempt, originated from the code of the retry operation.
+     */
     public static void onException(int maxAttempts, List<Class<? extends Exception>> whitelist, RetryOperation retryOperation) throws Exception {
         for (int attempt = 1; ; attempt++) {
             try {
@@ -65,7 +71,8 @@ public class Retry {
     }
 
     /**
-     * Suitable for tests as junit's assert functions throws errors and not exceptions. Throwable will catch both, errors and exceptions
+     * Suitable for tests (e.g. junit's assert functions throws errors and not exceptions).
+     * Throwable will catch both, errors and exceptions
      * but shouldn't be used in "normal" code of the service.
      *
      * @param maxAttempts
@@ -76,6 +83,16 @@ public class Retry {
         onThrowable(maxAttempts, null, retryOperation);
     }
 
+    /**
+     * Suitable for tests (e.g. junit's assert functions throws errors and not exceptions).
+     * Throwable will catch both, errors and exceptions
+     * but shouldn't be used in "normal" code of the service.
+     *
+     * @param maxAttempts how often should we try again when an exception is thrown?
+     * @param whitelist don't retry if one of those exceptions is thrown.
+     * @param retryOperation the code which should be retried.
+     * @throws Throwable of the last attempt, originated from the code of the retry operation.
+     */
     public static void onThrowable(int maxAttempts, List<Class<? extends Throwable>> whitelist,  RetryOperation retryOperation) throws Throwable {
         for (int attempt = 1; ; attempt++) {
             try {

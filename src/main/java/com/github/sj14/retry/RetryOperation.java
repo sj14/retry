@@ -7,7 +7,7 @@ public interface RetryOperation {
 
    /**
     * Retryable code to execute.
-    * @param attempt counts the current attempt, starting at 0.
+    * @param attempt counts the current attempt, starting at 1.
     * @throws Exception
     */
    void doIt(int attempt) throws Exception;

@@ -1,4 +1,5 @@
-[![](https://jitpack.io/v/sj14/retry.svg)](https://jitpack.io/#sj14/retry)
+[![](https://jitci.com/gh/sj14/retry/svg)](https://jitci.com/gh/sj14/retry)
+ [![](https://jitpack.io/v/sj14/retry.svg)](https://jitpack.io/#sj14/retry)
 
 # Introduction
 

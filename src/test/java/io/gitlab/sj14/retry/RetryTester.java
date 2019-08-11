@@ -63,7 +63,7 @@ class RetryTester {
     void testOnExceptionWithWhitelistFail() {
         AtomicInteger attempts = new AtomicInteger();
 
-        assertThrows(IndexOutOfBoundsException.class, () -> Retry.onException(3, Arrays.asList(ClassNotFoundException.class), attempt -> {
+        assertThrows(IndexOutOfBoundsException.class, () -> Retry.onException(3, Arrays.asList(IndexOutOfBoundsException.class), attempt -> {
             attempts.set(attempt);
 
             // should rethrow the Exception immediately, as it's whitelisted

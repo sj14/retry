@@ -1,4 +1,4 @@
-package io.gitlab.sj14.retry;
+package com.github.sj14.retry;
 
 import java.util.List;
 

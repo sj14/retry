@@ -1,4 +1,4 @@
-package io.gitlab.sj14.retry;
+package com.github.sj14.retry;
 
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 class RetryTester {
 
     @Test
-    void testOnExceptionSuccess() throws Exception {
+    void onExceptionSuccess() throws Exception {
         AtomicInteger attempts = new AtomicInteger();
 
         Retry.onException(3, attempt -> {
@@ -30,7 +30,7 @@ class RetryTester {
     }
 
     @Test
-    void testOnExceptionFail() {
+    void onExceptionFail() {
         AtomicInteger attempts = new AtomicInteger();
 
         assertThrows(Exception.class, () -> Retry.onException(3, attempt -> {
@@ -44,7 +44,7 @@ class RetryTester {
     }
 
     @Test
-    void testOnExceptionWithThrowableFail() {
+    void onExceptionWithThrowableFail() {
         AtomicInteger attempts = new AtomicInteger();
 
         assertThrows(Error.class, () -> Retry.onException(3, attempt -> {
@@ -60,7 +60,7 @@ class RetryTester {
     }
 
     @Test
-    void testOnExceptionWithWhitelistFail() {
+    void onExceptionWithWhitelistFail() {
         AtomicInteger attempts = new AtomicInteger();
 
         assertThrows(IndexOutOfBoundsException.class, () -> Retry.onException(3, Arrays.asList(IndexOutOfBoundsException.class), attempt -> {
@@ -76,7 +76,7 @@ class RetryTester {
     }
 
     @Test
-    void testOnExceptionWithWhitelistWrongFail() {
+    void onExceptionWithWhitelistWrongFail() {
         AtomicInteger attempts = new AtomicInteger();
 
         assertThrows(NegativeArraySizeException.class, () -> Retry.onException(3, Arrays.asList(IndexOutOfBoundsException.class), attempt -> {
@@ -91,7 +91,7 @@ class RetryTester {
     }
 
     @Test
-    void testOnThrowableSuccess() throws Throwable {
+    void onThrowableSuccess() throws Throwable {
         AtomicInteger attempts = new AtomicInteger();
 
         Retry.onThrowable(3, attempt -> {
@@ -110,7 +110,7 @@ class RetryTester {
     }
 
     @Test
-    void testOnThrowableWithExceptionSuccess() throws Throwable {
+    void onThrowableWithExceptionSuccess() throws Throwable {
         AtomicInteger attempts = new AtomicInteger();
 
         Retry.onThrowable(3, attempt -> {
@@ -129,7 +129,7 @@ class RetryTester {
     }
 
     @Test
-    void testOnThrowableFail() {
+    void onThrowableFail() {
         AtomicInteger attempts = new AtomicInteger();
 
         assertThrows(Error.class, () -> Retry.onThrowable(3, attempt -> {
@@ -145,7 +145,7 @@ class RetryTester {
     }
 
     @Test
-    void testOnThrowableWithExceptionFail() {
+    void onThrowableWithExceptionFail() {
         AtomicInteger attempts = new AtomicInteger();
 
         assertThrows(Exception.class, () -> Retry.onThrowable(3, attempt -> {
@@ -159,7 +159,7 @@ class RetryTester {
     }
 
     @Test
-    void testOnThrowableWithWhitelistFail() {
+    void onThrowableWithWhitelistFail() {
         AtomicInteger attempts = new AtomicInteger();
 
         assertThrows(AssertionError.class, () -> Retry.onThrowable(3, Arrays.asList(AssertionError.class), attempt -> {
@@ -175,7 +175,7 @@ class RetryTester {
     }
 
     @Test
-    void testOnThrowableWithWhitelistWrongFail() {
+    void onThrowableWithWhitelistWrongFail() {
         AtomicInteger attempts = new AtomicInteger();
 
         assertThrows(InstantiationError.class, () -> Retry.onThrowable(3, Arrays.asList(AssertionError.class), attempt -> {

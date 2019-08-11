@@ -1,9 +1,12 @@
 package io.gitlab.sj14.retry;
 
+import java.util.List;
+
 public class Retry {
 
     /**
      * Retry specified operation, defaulting to 5 retry attempts.
+     *
      * @param retryOperation
      * @throws Exception
      */
@@ -19,18 +22,32 @@ public class Retry {
      * @throws Exception
      */
     public static void onException(int maxAttempts, RetryOperation retryOperation) throws Exception {
-        for (int attempt = 0; ; attempt++) {
+        onException(maxAttempts, null, retryOperation);
+    }
+
+    public static void onException(int maxAttempts, List<Class<?>> whitelist, RetryOperation retryOperation) throws Exception {
+        for (int attempt = 1; ; attempt++) {
             try {
                 retryOperation.doIt(attempt);
                 break; // call was successful
             } catch (Exception e) {
+
+                // don't retry on whitelisted classes
+                if (whitelist != null) {
+                    for (Class<?> w : whitelist) {
+                        if (w.equals(e.getClass())) {
+                            throw e;
+                        }
+                    }
+                }
+
                 if (attempt < maxAttempts) {
                     // exponential backoff before trying again
-                    exponentialSleep(attempt + 1);
+                    exponentialSleep(attempt);
                     continue;
                 }
-                // reached max. attempts, don't retry, print stacktrace and throw the exception
-                e.printStackTrace();
+
+                // reached max. attempts
                 throw e;
             }
         }
@@ -39,10 +56,11 @@ public class Retry {
 
     /**
      * Retry specified operation, defaulting to 5 retry attempts.
+     *
      * @param retryOperation
      * @throws Throwable
      */
-    public static void onThrowable( RetryOperation retryOperation) throws Throwable {
+    public static void onThrowable(RetryOperation retryOperation) throws Throwable {
         onThrowable(5, retryOperation);
     }
 
@@ -55,18 +73,32 @@ public class Retry {
      * @throws Throwable
      */
     public static void onThrowable(int maxAttempts, RetryOperation retryOperation) throws Throwable {
-        for (int attempt = 0; ; attempt++) {
+        onThrowable(maxAttempts, null, retryOperation);
+    }
+
+    public static void onThrowable(int maxAttempts, List<Class<?>> whitelist,  RetryOperation retryOperation) throws Throwable {
+        for (int attempt = 1; ; attempt++) {
             try {
                 retryOperation.doIt(attempt);
                 break; // call was successful
             } catch (Throwable t) {
+
+                // don't retry on whistelisted classes
+                if (whitelist != null) {
+                    for (Class<?> w : whitelist) {
+                        if (w.equals(t.getClass())) {
+                            throw t;
+                        }
+                    }
+                }
+
                 if (attempt < maxAttempts) {
                     // exponential backoff before trying again
-                    exponentialSleep(attempt + 1);
+                    exponentialSleep(attempt);
                     continue;
                 }
-                // reached max. attempts, don't retry, print stacktrace and throw the throwable
-                t.printStackTrace();
+
+                // reached max. attempts
                 throw t;
             }
         }

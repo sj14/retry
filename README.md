@@ -34,7 +34,7 @@ With default number of retries (5):
 ```java
 Retry.onException(attempt -> {
     // code
-}
+})
 ```
 
 Whitelisting a specific Exception class. If the specified Exception was raised, it won't retry and immediately rethrow the Exception.
@@ -42,7 +42,7 @@ Whitelisting a specific Exception class. If the specified Exception was raised, 
 ```java
 Retry.onException(3, Arrays.asList(ClassNotFoundException.class), attempt -> {
     // code
-}
+})
 ```
 
 ## Throwables

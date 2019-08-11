@@ -2,6 +2,9 @@ package com.github.sj14.retry;
 
 import java.util.List;
 
+/**
+ * Different methods for retrying code on Exceptions or Throwables.
+ */
 public class Retry {
 
     /**

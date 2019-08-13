@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
-class RetryTester {
+class RetryTest {
 
     @Test
     void onExceptionSuccess() throws Exception {

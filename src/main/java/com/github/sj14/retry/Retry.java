@@ -1,6 +1,6 @@
 package com.github.sj14.retry;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Different methods for retrying code on Exceptions or Throwables.
@@ -34,7 +34,7 @@ public class Retry {
      * @param retryOperation the code which should be retried.
      * @throws Exception of the last attempt, originated from the code of the retry operation.
      */
-    public static void onException(int maxAttempts, List<Class<? extends Exception>> whitelist, RetryOperation retryOperation) throws Exception {
+    public static void onException(int maxAttempts, Collection<Class<? extends Exception>> whitelist, RetryOperation retryOperation) throws Exception {
         for (int attempt = 1; ; attempt++) {
             try {
                 retryOperation.doIt(attempt);
@@ -96,7 +96,7 @@ public class Retry {
      * @param retryOperation the code which should be retried.
      * @throws Throwable of the last attempt, originated from the code of the retry operation.
      */
-    public static void onThrowable(int maxAttempts, List<Class<? extends Throwable>> whitelist,  RetryOperation retryOperation) throws Throwable {
+    public static void onThrowable(int maxAttempts, Collection<Class<? extends Throwable>> whitelist, RetryOperation retryOperation) throws Throwable {
         for (int attempt = 1; ; attempt++) {
             try {
                 retryOperation.doIt(attempt);

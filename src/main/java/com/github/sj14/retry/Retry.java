@@ -1,5 +1,6 @@
 package com.github.sj14.retry;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -35,31 +36,9 @@ public class Retry {
      * @throws Exception of the last attempt, originated from the code of the retry operation.
      */
     public static void onException(int maxAttempts, Collection<Class<? extends Exception>> whitelist, RetryOperation retryOperation) throws Exception {
-        for (int attempt = 1; ; attempt++) {
-            try {
-                retryOperation.doIt(attempt);
-                break; // call was successful
-            } catch (Exception e) {
-
-                // don't retry on whitelisted classes
-                if (whitelist != null) {
-                    for (Class<?> w : whitelist) {
-                        if (w.equals(e.getClass())) {
-                            throw e;
-                        }
-                    }
-                }
-
-                if (attempt < maxAttempts) {
-                    // exponential backoff before trying again
-                    exponentialSleep(attempt);
-                    continue;
-                }
-
-                // reached max. attempts
-                throw e;
-            }
-        }
+        // Java can't convert this automatically?
+        ArrayList<Class<? extends Throwable>> wl = new ArrayList<>(whitelist);
+        retry(maxAttempts, wl, true, retryOperation);
     }
 
 
@@ -69,7 +48,7 @@ public class Retry {
      * @param retryOperation
      * @throws Throwable
      */
-    public static void onThrowable(RetryOperation retryOperation) throws Throwable {
+    public static void onThrowable(RetryOperation retryOperation) throws Exception {
         onThrowable(5, retryOperation);
     }
 
@@ -82,7 +61,7 @@ public class Retry {
      * @param retryOperation
      * @throws Throwable
      */
-    public static void onThrowable(int maxAttempts, RetryOperation retryOperation) throws Throwable {
+    public static void onThrowable(int maxAttempts, RetryOperation retryOperation) throws Exception {
         onThrowable(maxAttempts, null, retryOperation);
     }
 
@@ -96,14 +75,23 @@ public class Retry {
      * @param retryOperation the code which should be retried.
      * @throws Throwable of the last attempt, originated from the code of the retry operation.
      */
-    public static void onThrowable(int maxAttempts, Collection<Class<? extends Throwable>> whitelist, RetryOperation retryOperation) throws Throwable {
+    public static void onThrowable(int maxAttempts, Collection<Class<? extends Throwable>> whitelist, RetryOperation retryOperation) throws Exception {
+        retry(maxAttempts, whitelist, false, retryOperation);
+    }
+
+    private static void retry(int maxAttempts, Collection<Class<? extends Throwable>> whitelist, boolean whitelistErrors, RetryOperation retryOperation) throws Exception {
         for (int attempt = 1; ; attempt++) {
             try {
                 retryOperation.doIt(attempt);
                 break; // call was successful
             } catch (Throwable t) {
 
-                // don't retry on whistelisted classes
+                // don't retry Errors (using onException method)
+                if (whitelistErrors && t instanceof Error) {
+                    throw t;
+                }
+
+                // don't retry on whitelisted classes
                 if (whitelist != null) {
                     for (Class<?> w : whitelist) {
                         if (w.equals(t.getClass())) {

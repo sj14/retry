@@ -33,9 +33,9 @@ class RetryTest {
     void onExceptionFail() {
         AtomicInteger attempts = new AtomicInteger();
 
-        assertThrows(Exception.class, () -> Retry.onException(3, attempt -> {
+        assertThrows(IndexOutOfBoundsException.class, () -> Retry.onException(3, attempt -> {
             attempts.set(attempt);
-            throw new Exception();
+            throw new IndexOutOfBoundsException();
         }));
 
         if (attempts.get() != 3) {
@@ -47,7 +47,7 @@ class RetryTest {
     void onExceptionWithThrowableFail() {
         AtomicInteger attempts = new AtomicInteger();
 
-        assertThrows(Error.class, () -> Retry.onException(3, attempt -> {
+        assertThrows(AssertionError.class, () -> Retry.onException(3, attempt -> {
             attempts.set(attempt);
 
             // should rethrow the Error immediately, as we are only retrying on Exceptions
@@ -150,11 +150,11 @@ class RetryTest {
     void onThrowableFail() {
         AtomicInteger attempts = new AtomicInteger();
 
-        assertThrows(Error.class, () -> Retry.onThrowable(3, attempt -> {
+        assertThrows(AssertionError.class, () -> Retry.onThrowable(3, attempt -> {
             attempts.set(attempt);
 
             // throw Error instead of Exception
-            throw new Error();
+            throw new AssertionError();
         }));
 
         if (attempts.get() != 3) {

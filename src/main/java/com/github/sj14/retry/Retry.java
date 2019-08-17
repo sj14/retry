@@ -36,12 +36,14 @@ public class Retry {
      * @throws Exception of the last attempt, originated from the code of the retry operation.
      */
     public static void onException(int maxAttempts, Collection<Class<? extends Exception>> whitelist, RetryOperation retryOperation) throws Exception {
+        ArrayList<Class<? extends Throwable>> wl = null;
+
         if (whitelist != null) {
             // Java can't convert this automatically?
-            ArrayList<Class<? extends Throwable>> wl = new ArrayList<>(whitelist);
-            retry(maxAttempts, wl, true, retryOperation);
+            wl = new ArrayList<>(whitelist);
         }
-        retry(maxAttempts, null, true, retryOperation);
+
+        retry(maxAttempts, wl, true, retryOperation);
     }
 
 

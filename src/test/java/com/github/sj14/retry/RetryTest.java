@@ -91,6 +91,24 @@ class RetryTest {
     }
 
     @Test
+    void onExceptionWithWhitelistNoInheritedException() {
+        AtomicInteger attempts = new AtomicInteger();
+
+        assertThrows(IndexOutOfBoundsException.class, () -> Retry.onException(3, Arrays.asList(RuntimeException.class), attempt -> {
+            attempts.set(attempt);
+
+            // IndexOutOfBoundsException extends RuntimeException,
+            // but we don't want to whitelist inherited classes,
+            // thus, it should use 3 attempts.
+            throw new IndexOutOfBoundsException();
+        }));
+
+        if (attempts.get() != 3) {
+            fail();
+        }
+    }
+
+    @Test
     void onThrowableSuccess() throws Throwable {
         AtomicInteger attempts = new AtomicInteger();
 

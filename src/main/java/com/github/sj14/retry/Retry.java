@@ -8,6 +8,10 @@ import java.util.Collection;
  */
 public class Retry {
 
+    private Retry() {
+        // not instantiable, only static methods so far
+    }
+
     /**
      * Retry specified operation, defaulting to 5 retry attempts.
      *

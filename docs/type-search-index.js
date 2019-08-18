@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"com.github.sj14.retry","l":"Retry"},{"p":"com.github.sj14.retry","l":"RetryOperation"}]
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"com.github.sj14.retry","l":"Retry"},{"p":"com.github.sj14.retry","l":"Retryable"}]

@@ -4,7 +4,7 @@ package com.github.sj14.retry;
  * The interface the retryable code has to implement.
  * (based on https://stackoverflow.com/a/13240586)
  */
-public interface RetryOperation {
+public interface Retryable {
 
    /**
     * Retryable code to execute.

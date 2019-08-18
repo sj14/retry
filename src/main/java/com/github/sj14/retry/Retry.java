@@ -15,31 +15,31 @@ public class Retry {
     /**
      * Retry specified operation, defaulting to 5 retry attempts.
      *
-     * @param retryOperation
+     * @param retryable
      * @throws Exception
      */
-    public static void onException(RetryOperation retryOperation) throws Exception {
-        onException(5, retryOperation);
+    public static void onException(Retryable retryable) throws Exception {
+        onException(5, retryable);
     }
 
     /**
      *
      * @param maxAttempts
-     * @param retryOperation
+     * @param retryable
      * @throws Exception
      */
-    public static void onException(int maxAttempts, RetryOperation retryOperation) throws Exception {
-        onException(maxAttempts, null, retryOperation);
+    public static void onException(int maxAttempts, Retryable retryable) throws Exception {
+        onException(maxAttempts, null, retryable);
     }
 
     /**
      *
      * @param maxAttempts how often should we try again when an exception is thrown?
      * @param whitelist don't retry if one of those exceptions is thrown.
-     * @param retryOperation the code which should be retried.
+     * @param retryable the code which should be retried.
      * @throws Exception of the last attempt, originated from the code of the retry operation.
      */
-    public static void onException(int maxAttempts, Collection<Class<? extends Exception>> whitelist, RetryOperation retryOperation) throws Exception {
+    public static void onException(int maxAttempts, Collection<Class<? extends Exception>> whitelist, Retryable retryable) throws Exception {
         ArrayList<Class<? extends Throwable>> wl = null;
 
         if (whitelist != null) {
@@ -47,18 +47,18 @@ public class Retry {
             wl = new ArrayList<>(whitelist);
         }
 
-        retry(maxAttempts, wl, true, retryOperation);
+        retry(maxAttempts, wl, true, retryable);
     }
 
 
     /**
      * Retry specified operation, defaulting to 5 retry attempts.
      *
-     * @param retryOperation
+     * @param retryable
      * @throws Throwable
      */
-    public static void onThrowable(RetryOperation retryOperation) throws Exception {
-        onThrowable(5, retryOperation);
+    public static void onThrowable(Retryable retryable) throws Exception {
+        onThrowable(5, retryable);
     }
 
     /**
@@ -67,11 +67,11 @@ public class Retry {
      * but shouldn't be used in "normal" code of the service.
      *
      * @param maxAttempts
-     * @param retryOperation
+     * @param retryable
      * @throws Throwable
      */
-    public static void onThrowable(int maxAttempts, RetryOperation retryOperation) throws Exception {
-        onThrowable(maxAttempts, null, retryOperation);
+    public static void onThrowable(int maxAttempts, Retryable retryable) throws Exception {
+        onThrowable(maxAttempts, null, retryable);
     }
 
     /**
@@ -81,17 +81,17 @@ public class Retry {
      *
      * @param maxAttempts how often should we try again when an exception is thrown?
      * @param whitelist don't retry if one of those exceptions is thrown.
-     * @param retryOperation the code which should be retried.
+     * @param retryable the code which should be retried.
      * @throws Throwable of the last attempt, originated from the code of the retry operation.
      */
-    public static void onThrowable(int maxAttempts, Collection<Class<? extends Throwable>> whitelist, RetryOperation retryOperation) throws Exception {
-        retry(maxAttempts, whitelist, false, retryOperation);
+    public static void onThrowable(int maxAttempts, Collection<Class<? extends Throwable>> whitelist, Retryable retryable) throws Exception {
+        retry(maxAttempts, whitelist, false, retryable);
     }
 
-    private static void retry(int maxAttempts, Collection<Class<? extends Throwable>> whitelist, boolean whitelistErrors, RetryOperation retryOperation) throws Exception {
+    private static void retry(int maxAttempts, Collection<Class<? extends Throwable>> whitelist, boolean whitelistErrors, Retryable retryable) throws Exception {
         for (int attempt = 1; ; attempt++) {
             try {
-                retryOperation.doIt(attempt);
+                retryable.doIt(attempt);
                 break; // call was successful
             } catch (Throwable t) {
 
